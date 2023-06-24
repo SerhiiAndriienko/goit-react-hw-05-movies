@@ -42,28 +42,6 @@ export default function Hero() {
   const goBack = () => {
     navigate(-1);
   };
-
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     await axios
-  //       .get(URL + `${movieId}`, {
-  //         headers: {
-  //           Authorization: `Bearer ${KEY}`,
-  //           Accept: 'application/json',
-  //         },
-  //       })
-  //       .then(response => {
-  //         const oneMovie = response.data;
-  //         console.log(oneMovie);
-  //         setMovieName(oneMovie);
-  //       })
-  //       .catch(error => {
-  //         console.error(error);
-  //       });
-  //   }
-
-  //   fetchData();
-  // }, []);
   if (isLoading) {
     return <Loader></Loader>;
   } else {

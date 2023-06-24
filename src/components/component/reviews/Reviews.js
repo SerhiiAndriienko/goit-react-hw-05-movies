@@ -2,11 +2,14 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import Loader from '../Loader/Loader';
 const URL = 'https://api.themoviedb.org/3/movie/';
 const KEY =
   'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZGVmYTI0YjEwYTczNzY2Y2QwNjEyMzE2NGM0NjNlMyIsInN1YiI6IjY0NGUzZjJmNmVlY2VlMTdhYjAwZjA5YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.5PeBC6Z1Yveq7Za8a8C_dTjlgd3mkVL0iExNTWrYAYY';
 
 export default function Reviews() {
+  // const [isLoading, setIsLoading] = useState(false);
+
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
   useEffect(() => {
@@ -30,7 +33,7 @@ export default function Reviews() {
     fetchMovieDetails();
   }, [movieId]);
   if (!movie) {
-    return <div>Loading...</div>;
+    return <Loader></Loader>;
   }
   return (
     <div>
