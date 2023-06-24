@@ -12,7 +12,7 @@ export default function Reviews() {
   useEffect(() => {
     const fetchMovieDetails = async () => {
       await axios
-        .get(`${URL}` + `${movieId}` + '/reviews', {
+        .get(`${URL}${movieId}/reviews`, {
           headers: {
             Authorization: `Bearer ${KEY}`,
             Accept: 'application/json',

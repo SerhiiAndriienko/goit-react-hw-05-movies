@@ -12,7 +12,7 @@ export default function Cast() {
   useEffect(() => {
     const fetchMovieDetails = async () => {
       await axios
-        .get(`${URL}` + `${movieId}` + '/credits', {
+        .get(`${URL}${movieId}/credits`, {
           headers: {
             Authorization: `Bearer ${KEY}`,
             Accept: 'application/json',
