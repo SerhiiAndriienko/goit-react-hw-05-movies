@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useSearchParams, useNavigate } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import Loader from 'components/component/Loader/Loader';
 
@@ -12,17 +12,19 @@ export default function Movies() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   // const movieName = searchParams.get('query') ?? '';
 
   const updateQueryString = e => {
     setSearchQuery(e.target.value);
   };
-  const searchMovie = () => {
+  const searchMovie = e => {
+    e.preventDefault();
     setSearchParams({ query: searchQuery });
   };
   useEffect(() => {
     if (searchParams.get('query')) {
+      setSearchQuery(searchParams.get('query'));
       setIsLoading(true);
       const fetchMovieDetails = async () => {
         try {
@@ -52,35 +54,42 @@ export default function Movies() {
     }
   }, [searchParams]);
 
-  const goBack = () => {
-    navigate(-1);
-  };
+  // const goBack = () => {
+  //   navigate('/movies', { replace: true });
+  // };
 
   if (isLoading) {
     return <Loader></Loader>;
   }
   return (
     <div>
-      {movies && (
+      {/* {movies && (
         <button onClick={goBack} style={{ display: 'block' }}>
           Go back
         </button>
-      )}
+      )} */}
 
-      <span>Search here: </span>
-      <input
-        value={searchQuery}
-        onChange={updateQueryString}
-        type="text"
-        placeholder="Enter here"
-      ></input>
-      <button onClick={searchMovie}>Search</button>
+      <form onSubmit={searchMovie}>
+        <label>Search here: </label>
+        <input
+          value={searchQuery}
+          onChange={updateQueryString}
+          type="text"
+          placeholder="Enter here"
+        ></input>
+        <button type="submit">Search</button>
+      </form>
 
       {movies && (
         <ul>
           {movies.map(movie => (
             <li key={movie.id}>
-              <Link to={`/movie/${movie.id}`}>{movie.title}</Link>
+              <Link
+                to={`/movies/${movie.id}`}
+                state={{ from: `/movies?query=${searchParams.get('query')}` }}
+              >
+                {movie.title}
+              </Link>
             </li>
           ))}
         </ul>

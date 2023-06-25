@@ -48,7 +48,9 @@ export default function Home() {
         <ul>
           {moviesList.map(movie => (
             <li key={movie.id}>
-              <Link to={`/movie/${movie.id}`}>{movie.title}</Link>
+              <Link to={`/movies/${movie.id}`} state={{ from: `/` }}>
+                {movie.title}
+              </Link>
             </li>
           ))}
         </ul>

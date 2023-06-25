@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Cast from '../cast/Cast';
 import Reviews from '../reviews/Reviews';
 import Loader from '../Loader/Loader';
+import css from './Hero.module.css';
 const KEY =
   'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZGVmYTI0YjEwYTczNzY2Y2QwNjEyMzE2NGM0NjNlMyIsInN1YiI6IjY0NGUzZjJmNmVlY2VlMTdhYjAwZjA5YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.5PeBC6Z1Yveq7Za8a8C_dTjlgd3mkVL0iExNTWrYAYY';
 const URL = 'https://api.themoviedb.org/3/movie/';
@@ -11,9 +12,9 @@ const URL = 'https://api.themoviedb.org/3/movie/';
 export default function Hero() {
   const location = useLocation();
   const { movieId } = useParams();
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-
+  const backLinkHref = location.state?.from ?? '/';
+  console.log(location);
   const [movie, setMovie] = useState(null);
   useEffect(() => {
     setIsLoading(true);
@@ -39,9 +40,9 @@ export default function Hero() {
 
     fetchMovieDetails();
   }, [movieId]);
-  const goBack = () => {
-    navigate(-1);
-  };
+  // const goBack = () => {
+  //   navigate('/movies', { replace: true });
+  // };
   if (isLoading) {
     return <Loader></Loader>;
   } else {
@@ -49,7 +50,9 @@ export default function Hero() {
       <div>
         {movie ? (
           <div>
-            <button onClick={goBack}>Go back</button>
+            <Link to={backLinkHref} className={css.linkBtn}>
+              Go back
+            </Link>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <img
                 src={
@@ -87,11 +90,16 @@ export default function Hero() {
                 </span>
               </div>
             </div>
-            <Link to={`/movie/${movie.id}/cast`}>Cast</Link>
-            <Link to={`/movie/${movie.id}/reviews`}>Reviews</Link>
-
-            {location.pathname === `/movie/${movieId}/cast` && <Cast />}
-            {location.pathname === `/movie/${movieId}/reviews` && <Reviews />}
+            <div className={css.decorationFlex}>
+              <Link to={`/movies/${movie.id}/cast`} className={css.linkBtn}>
+                Cast
+              </Link>
+              <Link to={`/movies/${movie.id}/reviews`} className={css.linkBtn}>
+                Reviews
+              </Link>
+            </div>
+            {location.pathname === `/movies/${movieId}/cast` && <Cast />}
+            {location.pathname === `/movies/${movieId}/reviews` && <Reviews />}
           </div>
         ) : (
           ''
