@@ -13,9 +13,12 @@ export default function Hero() {
   const location = useLocation();
   const { movieId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
+  const [locationURL, setLocationURL] = useState('');
   const backLinkHref = location.state?.from ?? '/';
-  console.log(location);
+
+  console.log(location.state);
   const [movie, setMovie] = useState(null);
+
   useEffect(() => {
     setIsLoading(true);
 
@@ -37,12 +40,14 @@ export default function Hero() {
           setIsLoading(false);
         });
     };
-
+    if (backLinkHref) {
+      setLocationURL(backLinkHref);
+    }
+    console.log(`location:${locationURL}`);
     fetchMovieDetails();
-  }, [movieId]);
-  // const goBack = () => {
-  //   navigate('/movies', { replace: true });
-  // };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [movieId, locationURL]);
+
   if (isLoading) {
     return <Loader></Loader>;
   } else {
@@ -50,7 +55,7 @@ export default function Hero() {
       <div>
         {movie ? (
           <div>
-            <Link to={backLinkHref} className={css.linkBtn}>
+            <Link to={locationURL} className={css.linkBtn}>
               Go back
             </Link>
             <div style={{ display: 'flex', alignItems: 'center' }}>
